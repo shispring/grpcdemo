@@ -1,0 +1,51 @@
+{
+    // 界面主题选择、图标选择（需要安装插件： Material Icon Theme ）
+    "workbench.colorTheme": "GitHub Dark",
+    "workbench.iconTheme": "material-icon-theme",
+    // ---编辑面板字体大小
+    "editor.fontSize": 14,
+    // ---丝滑打字配置
+    "editor.smoothScrolling": true,
+    "editor.cursorBlinking": "expand",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "workbench.list.smoothScrolling": true,
+    // ---鼠标控制大小,使用鼠标的可以尝试
+    // "editor.mouseWheelZoom": true,
+    // ---彩虹括号与作用域块线条提示
+    "editor.guides.bracketPairs": true,
+    "editor.bracketPairColorization.enabled": true,
+    // ---更加智能的代码提示
+    // 控制活动代码段是否阻止快速建议
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    // 除了 `Tab` 键以外， `Enter` 键是否同样可以接受建议
+    // 这能减少“插入新行”和“接受建议”命令之间的歧义
+    "editor.acceptSuggestionOnEnter": "smart",
+    // 代码补全列表中，优先选择最近的建议
+    "editor.suggestSelection": "recentlyUsedByPrefix",
+    // ---自动补全括号、引号
+    "editor.autoClosingBrackets": "beforeWhitespace",
+    "editor.autoClosingDelete": "always",
+    "editor.autoClosingOvertype": "always",
+    "editor.autoClosingQuotes": "beforeWhitespace",
+    // ---自动换行和行高
+    "editor.wordWrap": "on",
+    "editor.lineHeight": 1.5,
+    // ---保存自动删除末尾空格
+    "files.trimTrailingWhitespace": false,
+    // ---保存自动格式化代码
+    "editor.formatOnSave": true,
+    // ---双击选中被截断的字符
+    "editor.wordSeparators": "`~!@%^&*()=+[{]}\\|;:'\",.<>/?（），。；：",
+    // ---折行缩进策略和关闭右侧代码地图
+    "editor.minimap.enabled": false,
+    "editor.foldingStrategy": "indentation",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 100,
+    "go.formatTool": "gofmt",
+    "gopls": {
+        "usePlaceholders": true,
+        "completeUnimported": true,
+        "staticcheck": true
+    },
+    "go.vetOnSave": "package",
+}
