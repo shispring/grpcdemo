@@ -13,7 +13,7 @@ import (
 
 func TestGrpcClient(t *testing.T) {
 	// TLS连接
-	creds, err := credentials.NewClientTLSFromFile("/Users/shijianpeng/work/private/grpcdemo/keys/ca.crt", "www.demo.cn")
+	creds, err := credentials.NewClientTLSFromFile("../keys/ca.crt", "www.demo.cn")
 	if err != nil {
 		grpclog.Fatalf("Failed to create TLS credentials %v", err)
 	}

@@ -38,7 +38,7 @@ func TestGrpcServer(t *testing.T) {
 	}
 
 	// TLS认证
-	creds, err := credentials.NewServerTLSFromFile("/Users/shijianpeng/work/private/grpcdemo/keys/server.crt", "/Users/shijianpeng/work/private/grpcdemo/keys/server.key")
+	creds, err := credentials.NewServerTLSFromFile("../keys/server.crt", "../keys/server.key")
 	if err != nil {
 		grpclog.Fatalf("Failed to generate credentials %v", err)
 	}
