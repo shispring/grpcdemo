@@ -75,6 +75,63 @@ go test -v ./test/server_test.go
 go test -v ./test/client_test.go 
 ```
 
+## 使用grpcurl调试
+```
+#使用了TLS模式调试步骤
+grpcurl -v \
+  -cacert ca.crt \
+  -authority www.demo.cn \
+  127.0.0.1:8972 list
+
+grpcurl -v \
+  -cacert ca.crt \
+  -authority www.demo.cn \
+  127.0.0.1:8972 list helloworld.Greeter
+
+grpcurl -v \
+  -cacert ca.crt \
+  -authority www.demo.cn \
+  127.0.0.1:8972 describe helloworld.Greeter.SayHello
+
+
+grpcurl -v \
+  -cacert ca.crt \
+  -authority www.demo.cn \
+  127.0.0.1:8972 describe helloworld.HelloRequest
+
+
+
+grpcurl \
+  -cert server.crt \
+  -key server.key \
+  -cacert ca.crt \
+  -authority www.demo.cn \
+  -d '{"name": "China"}' \
+  127.0.0.1:8972 helloworld.Greeter/SayHello
+
+或者
+
+grpcurl \
+  -cert server.crt \
+  -key server.key \
+  -cacert ca.crt \
+  -authority www.demo.cn \
+  -d '{"name": "China"}' \
+  127.0.0.1:8972 helloworld.Greeter.SayHello
+
+
+1.-cert server.crt
+指定客户端使用的证书文件，这里是服务端证书文件 server.crt。
+2.-key server.key
+指定客户端使用的私钥文件，与 server.crt 配套使用。
+3.-cacert ca.crt
+指定 CA 根证书文件，用于验证服务端证书的合法性。
+4.-authority www.demo.cn
+指定服务端证书的 Common Name 或 subjectAltName，这里需要与服务端证书中的 CN 或 SAN 匹配（例如 www.demo.cn）。
+5.-d '{"name": "China"}'
+指定请求数据，这里是一个 JSON 格式的请求体，调用服务端的 SayHello 方法时需要传递此数据。 
+```
+
 ---
 
 ### **关于 `-subj` 的使用与含义**
