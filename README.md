@@ -75,11 +75,76 @@ go test -v ./test/server_test.go
 go test -v ./test/client_test.go 
 ```
 
-## tips
-```
-Issuer 和 Subject 的区别
-	•	Issuer：表示证书的颁发者，即签署该证书的 CA。
-	•	Subject：表示证书的持有者，即证书所代表的实体。
+---
 
-  
+### **关于 `-subj` 的使用与含义**
+
+`-subj` 参数用于在命令行中直接指定证书的主题信息，避免交互式输入。这是非交互式生成证书时非常常用的方式。
+
+#### **`-subj` 参数的格式**
+`-subj` 参数的值是一个以 `/` 分隔的字符串，每个字段的含义如下：
+
+| 字段名 | 全称                   | 含义                                                                                      | 示例               |
+|--------|------------------------|-------------------------------------------------------------------------------------------|--------------------|
+| `C`    | Country Name           | 国家代码，需为两位 ISO 3166 国家代码                                                      | `C=CN`            |
+| `ST`   | State or Province Name | 州或省的名称（可选）                                                                       | `ST=Beijing`      |
+| `L`    | Locality Name          | 地区或城市名称                                                                            | `L=Beijing`       |
+| `O`    | Organization Name      | 组织名称（通常是公司名称）                                                                 | `O=demo`           |
+| `OU`   | Organizational Unit    | 组织部门名称（可选，通常是团队或部门名称）                                                 | `OU=IT Department`|
+| `CN`   | Common Name            | 通用名称，通常是域名或主机名                                                               | `CN=www.demo.cn`   |
+| `emailAddress` | Email Address | 邮箱地址（可选）                                                                          | `emailAddress=admin@demo.cn` |
+
+#### **示例**
+```bash
+-subj "/C=CN/ST=Beijing/L=Beijing/O=demo/OU=IT Department/CN=www.demo.cn"
 ```
+
+---
+
+### **注意事项**
+1. **字段的匹配**：
+   - `CN`（Common Name）字段必须与您希望匹配的域名一致。例如，`CN=www.demo.cn` 表示该证书适用于 `www.demo.cn`。
+   - 如果需要支持多个域名，请在扩展字段（如 `subjectAltName`）中添加更多域名，而不是只依赖 `CN`。
+
+2. **格式正确性**：
+   - 每个字段必须以 `/` 开头，不能有多余的空格。
+   - 如果某些字段为空，可以省略，但必须确保其他字段正确填写。
+
+3. **兼容性问题**：
+   - `CN` 字段在现代证书中已逐渐被 `subjectAltName` 替代，因此推荐在配置文件中明确添加 `SAN` 扩展。
+
+---
+
+### **Issuer 的含义**
+
+在读取证书时，`Issuer` 表示签发该证书的实体信息，即证书的颁发者（CA）。以下是常见的字段及其含义：
+
+| 字段名 | 含义                                   | 示例                |
+|--------|----------------------------------------|---------------------|
+| `C`    | 签发者所在国家代码                     | `C=CN`             |
+| `ST`   | 签发者所在州或省份                     | `ST=Beijing`       |
+| `L`    | 签发者所在城市                         | `L=Beijing`        |
+| `O`    | 签发者组织名称                         | `O=demo Root CA`    |
+| `OU`   | 签发者组织部门                         | `OU=Certificate Authority` |
+| `CN`   | 签发者的通用名称（通常是 CA 的名称）    | `CN=demo Root CA`   |
+
+---
+
+#### **Issuer 和 Subject 的区别**
+- **`Issuer`**：表示证书的颁发者，即签署该证书的 CA。
+- **`Subject`**：表示证书的持有者，即证书所代表的实体。
+
+---
+
+### **如何查看证书的 Issuer 信息**
+使用以下命令查看证书的详细信息：
+```bash
+openssl x509 -in server.crt -text -noout
+```
+
+---
+
+### **总结**
+1. `-subj` 提供了一种简洁、非交互式的方式指定证书的主题信息。
+2. 证书的 `Issuer` 表示签发证书的 CA 信息，通常需要与信任链中的根证书匹配。
+3. 在现代证书中，`subjectAltName` 的配置非常重要，`CN` 仅作为备用字段。
